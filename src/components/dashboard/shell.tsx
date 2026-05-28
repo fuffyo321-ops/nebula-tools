@@ -43,7 +43,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
               <Zap className="w-3 h-3 text-white fill-white" />
             </div>
             <span className="font-orbitron font-bold text-sm text-white">
-              NEBULA<span className="text-violet-400">TOOLS</span>
+              NEBULA<span className="text-violet-400">TOOLSNIPES</span>
             </span>
           </Link>
         </div>
