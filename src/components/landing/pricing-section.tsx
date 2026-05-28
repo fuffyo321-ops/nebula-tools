@@ -6,7 +6,7 @@ import { useRef } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Check, Zap, Crown, Star, Bitcoin } from "lucide-react";
+import { Check, Zap, Crown, Star } from "lucide-react";
 
 const plans = [
   {
@@ -213,11 +213,11 @@ export function PricingSection({ minimal = false }: { minimal?: boolean }) {
                 </Button>
                 {plan.price > 0 && (
                   <Link
-                    href={`/register?plan=${plan.id.toLowerCase()}&method=crypto`}
-                    className="flex items-center justify-center gap-1.5 w-full mb-5 py-1.5 text-xs text-orange-400/80 hover:text-orange-300 transition-colors"
+                    href={`/register?plan=${plan.id.toLowerCase()}`}
+                    className="flex items-center justify-center gap-1.5 w-full mb-5 py-1.5 text-xs text-[#AB9FF2]/70 hover:text-[#AB9FF2] transition-colors"
                   >
-                    <Bitcoin className="w-3.5 h-3.5" />
-                    Pay with crypto
+                    <svg width="12" height="12" viewBox="0 0 128 128" fill="none"><rect width="128" height="128" rx="24" fill="#AB9FF2"/><path fillRule="evenodd" clipRule="evenodd" d="M110 64C110 89.4 89.4 110 64 110S18 89.4 18 64 38.6 18 64 18s46 20.6 46 46zm-29-18.5c0 2.5-2 4.5-4.5 4.5S72 48 72 45.5 74 41 76.5 41 81 43 81 45.5zM52 45.5C52 48 50 50 47.5 50S43 48 43 45.5 45 41 47.5 41 52 43 52 45.5zM64 90c14.9 0 27-12.1 27-27 0-1.7-.2-3.4-.5-5H37.5c-.3 1.6-.5 3.3-.5 5 0 14.9 12.1 27 27 27z" fill="white"/></svg>
+                    Pay with Phantom (USDC)
                   </Link>
                 )}
 
