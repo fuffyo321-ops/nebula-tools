@@ -6,7 +6,8 @@ import { Navbar } from "@/components/shared/navbar";
 import { Footer } from "@/components/shared/footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ExternalLink, Star, Users, ArrowLeft, Lock } from "lucide-react";
+import { ToolRunner } from "@/components/tools/runner";
+import { Star, Users, ArrowLeft, Lock } from "lucide-react";
 import { formatNumber } from "@/lib/utils";
 
 interface PageProps {
@@ -122,29 +123,26 @@ export default async function ToolPage({ params }: PageProps) {
               </div>
             )}
 
-            {/* Launch section */}
-            <div className="flex flex-col sm:flex-row items-center gap-4">
-              {accessible ? (
-                <Button size="lg" className="w-full sm:w-auto font-orbitron tracking-wider shadow-2xl shadow-violet-500/30" asChild>
-                  <a href={tool.url} target="_blank" rel="noopener noreferrer">
-                    <ExternalLink className="w-4 h-4" />
-                    LAUNCH TOOL
-                  </a>
-                </Button>
-              ) : (
-                <div className="flex flex-col sm:flex-row items-center gap-4 w-full">
-                  <div className="flex items-center gap-2 text-sm text-slate-400">
-                    <Lock className="w-4 h-4 text-violet-400" />
-                    Requires <span className="font-semibold text-violet-400">{tool.requiredPlan}</span> plan
-                  </div>
-                  <Button size="lg" className="w-full sm:w-auto font-orbitron tracking-wider" asChild>
-                    <Link href="/pricing">
-                      UPGRADE TO ACCESS
-                    </Link>
-                  </Button>
+            {/* Tool runner or upgrade gate */}
+            {accessible ? (
+              <div className="mt-2">
+                <div className="border-t border-border pt-6">
+                  <ToolRunner slug={tool.slug} toolId={tool.id} />
                 </div>
-              )}
-            </div>
+              </div>
+            ) : (
+              <div className="flex flex-col sm:flex-row items-center gap-4 mt-2">
+                <div className="flex items-center gap-2 text-sm text-slate-400">
+                  <Lock className="w-4 h-4 text-violet-400" />
+                  Requires <span className="font-semibold text-violet-400">{tool.requiredPlan}</span> plan
+                </div>
+                <Button size="lg" className="w-full sm:w-auto font-orbitron tracking-wider" asChild>
+                  <Link href="/pricing">
+                    UPGRADE TO ACCESS
+                  </Link>
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>
