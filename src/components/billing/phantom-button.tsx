@@ -8,14 +8,12 @@ import { Loader2 } from "lucide-react";
 const USDC_MINT = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
 const PLAN_USDC: Record<"PRO" | "ELITE", number> = { PRO: 19, ELITE: 49 };
 const USDC_DECIMALS = 6;
-const MIN_SOL_LAMPORTS = 5000; // ~0.000005 SOL for fees
 
 interface PhantomProvider {
   isPhantom: boolean;
   publicKey: { toString: () => string } | null;
   connect: () => Promise<{ publicKey: { toString: () => string } }>;
   signAndSendTransaction: (tx: unknown, opts?: unknown) => Promise<{ signature: string }>;
-  isConnected: boolean;
 }
 
 declare global {
@@ -46,72 +44,65 @@ export function PhantomButton({ plan, className, size = "sm", variant = "outline
     try {
       const [
         { Connection, PublicKey, Transaction },
-        { getAssociatedTokenAddress, createTransferCheckedInstruction, createAssociatedTokenAccountInstruction },
+        {
+          getAssociatedTokenAddress,
+          createTransferCheckedInstruction,
+          createAssociatedTokenAccountIdempotentInstruction,
+        },
       ] = await Promise.all([
         import("@solana/web3.js"),
         import("@solana/spl-token"),
       ]);
 
       const treasuryAddress = process.env.NEXT_PUBLIC_SOLANA_TREASURY_ADDRESS;
-      if (!treasuryAddress) throw new Error("Treasury wallet not configured. Contact support.");
+      if (!treasuryAddress) throw new Error("Treasury wallet not configured.");
 
       const rpcUrl = process.env.NEXT_PUBLIC_SOLANA_RPC_URL ?? "https://api.mainnet-beta.solana.com";
       const connection = new Connection(rpcUrl, "confirmed");
 
-      // 1. Connect wallet
-      toast.loading("Connecting Phantom wallet...", { id: "sol-tx" });
+      toast.loading("Connecting Phantom...", { id: "sol-tx" });
       const { publicKey: walletPubkeyObj } = await provider.connect();
-      const senderKey = new PublicKey(walletPubkeyObj.toString());
-      const treasuryKey = new PublicKey(treasuryAddress);
-      const usdcMint = new PublicKey(USDC_MINT);
-      const requiredRaw = PLAN_USDC[plan] * 10 ** USDC_DECIMALS;
 
-      // 2. Pre-flight: check SOL balance for fees
-      toast.loading("Checking wallet balance...", { id: "sol-tx" });
-      const solBalance = await connection.getBalance(senderKey);
-      if (solBalance < MIN_SOL_LAMPORTS) {
-        throw new Error("You need a small amount of SOL in your wallet to pay the network fee (~0.001 SOL).");
-      }
+      const senderKey    = new PublicKey(walletPubkeyObj.toString());
+      const treasuryKey  = new PublicKey(treasuryAddress);
+      const usdcMint     = new PublicKey(USDC_MINT);
+      const requiredRaw  = PLAN_USDC[plan] * 10 ** USDC_DECIMALS;
 
-      // 3. Pre-flight: check USDC ATA exists and has enough balance
-      const senderATA = await getAssociatedTokenAddress(usdcMint, senderKey);
-      const senderATAInfo = await connection.getAccountInfo(senderATA).catch(() => null);
-      if (!senderATAInfo) {
-        throw new Error(`Your wallet has no USDC. You need ${PLAN_USDC[plan]} USDC to continue.`);
-      }
-      const balanceRes = await connection.getTokenAccountBalance(senderATA).catch(() => null);
-      const usdcBalance = balanceRes ? Number(balanceRes.value.amount) : 0;
-      if (usdcBalance < requiredRaw) {
-        const have = (usdcBalance / 10 ** USDC_DECIMALS).toFixed(2);
-        throw new Error(`Insufficient USDC. You have ${have} USDC but need ${PLAN_USDC[plan]} USDC.`);
-      }
-
-      // 4. Build transaction
-      toast.loading("Building transaction...", { id: "sol-tx" });
+      // Check USDC balance before building tx (gives clear error vs Phantom's generic one)
+      toast.loading("Checking balance...", { id: "sol-tx" });
+      const senderATA   = await getAssociatedTokenAddress(usdcMint, senderKey);
       const receiverATA = await getAssociatedTokenAddress(usdcMint, treasuryKey);
-      const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash("confirmed");
 
+      const balRes = await connection.getTokenAccountBalance(senderATA).catch(() => null);
+      if (!balRes) {
+        throw new Error(`Your wallet has no USDC. You need ${PLAN_USDC[plan]} USDC to pay.`);
+      }
+      const usdcHave = Number(balRes.value.amount);
+      if (usdcHave < requiredRaw) {
+        const have = (usdcHave / 10 ** USDC_DECIMALS).toFixed(2);
+        throw new Error(`Insufficient USDC: you have ${have} USDC but need ${PLAN_USDC[plan]} USDC.`);
+      }
+
+      // Build transaction
+      toast.loading("Building transaction...", { id: "sol-tx" });
+      const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash("confirmed");
       const tx = new Transaction({ recentBlockhash: blockhash, feePayer: senderKey });
 
-      // Create treasury USDC account if it doesn't exist yet
-      const receiverATAInfo = await connection.getAccountInfo(receiverATA).catch(() => null);
-      if (!receiverATAInfo) {
-        tx.add(createAssociatedTokenAccountInstruction(senderKey, receiverATA, treasuryKey, usdcMint));
-      }
+      // Idempotent ATA creation — safe whether treasury ATA exists or not
+      tx.add(createAssociatedTokenAccountIdempotentInstruction(senderKey, receiverATA, treasuryKey, usdcMint));
 
-      // Use createTransferChecked (validates mint + decimals — more robust)
+      // USDC transfer
       tx.add(createTransferCheckedInstruction(senderATA, usdcMint, receiverATA, senderKey, BigInt(requiredRaw), USDC_DECIMALS));
 
-      // 5. Sign & send
-      toast.loading("Approve the transaction in Phantom...", { id: "sol-tx" });
+      // Send via Phantom
+      toast.loading("Approve in Phantom wallet...", { id: "sol-tx" });
       const { signature } = await provider.signAndSendTransaction(tx);
 
-      // 6. Confirm
       toast.loading("Confirming on Solana...", { id: "sol-tx" });
       await connection.confirmTransaction({ signature, blockhash, lastValidBlockHeight }, "confirmed");
       toast.dismiss("sol-tx");
 
-      // 7. Activate plan server-side
+      // Server-side verification
       toast.loading("Activating your plan...", { id: "sol-verify" });
       const res = await fetch("/api/solana/verify", {
         method: "POST",
@@ -122,18 +113,18 @@ export function PhantomButton({ plan, className, size = "sm", variant = "outline
       if (!res.ok) throw new Error(data.error ?? "Verification failed");
 
       toast.dismiss("sol-verify");
-      toast.success(`${plan} plan activated! Welcome to NebulaToolsnipes.`);
+      toast.success(`${plan} plan activated!`);
       onSuccess?.();
       setTimeout(() => window.location.reload(), 1500);
 
     } catch (err: unknown) {
       toast.dismiss("sol-tx");
       toast.dismiss("sol-verify");
-      const raw = err instanceof Error ? err.message : String(err);
-      if (raw.includes("User rejected") || raw.includes("Transaction rejected") || raw.includes("rejected")) {
+      const msg = err instanceof Error ? err.message : String(err);
+      if (msg.toLowerCase().includes("rejected") || msg.toLowerCase().includes("cancelled")) {
         toast.error("Transaction cancelled.");
       } else {
-        toast.error(raw || "Payment failed. Please try again.");
+        toast.error(msg || "Payment failed. Please try again.");
       }
     } finally {
       setLoading(false);
