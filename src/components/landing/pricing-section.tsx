@@ -6,7 +6,7 @@ import { useRef } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Check, Zap, Crown, Star } from "lucide-react";
+import { Check, Zap, Crown, Star, Bitcoin } from "lucide-react";
 
 const plans = [
   {
@@ -203,7 +203,7 @@ export function PricingSection({ minimal = false }: { minimal?: boolean }) {
 
                 {/* CTA */}
                 <Button
-                  className="w-full mb-6 font-orbitron tracking-wider"
+                  className="w-full mb-2 font-orbitron tracking-wider"
                   variant={plan.id === "ELITE" ? "elite" : plan.highlighted ? "default" : "outline"}
                   asChild
                 >
@@ -211,6 +211,15 @@ export function PricingSection({ minimal = false }: { minimal?: boolean }) {
                     GET STARTED
                   </Link>
                 </Button>
+                {plan.price > 0 && (
+                  <Link
+                    href={`/register?plan=${plan.id.toLowerCase()}&method=crypto`}
+                    className="flex items-center justify-center gap-1.5 w-full mb-5 py-1.5 text-xs text-orange-400/80 hover:text-orange-300 transition-colors"
+                  >
+                    <Bitcoin className="w-3.5 h-3.5" />
+                    Pay with crypto
+                  </Link>
+                )}
 
                 {/* Features */}
                 <div className="space-y-2.5 flex-1">

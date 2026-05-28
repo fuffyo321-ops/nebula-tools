@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import {
   CreditCard, Zap, Crown, Star, ExternalLink,
-  CheckCircle2, AlertCircle, XCircle, Clock, Loader2,
+  CheckCircle2, AlertCircle, XCircle, Clock, Loader2, Bitcoin,
 } from "lucide-react";
 import { formatPrice, formatDate } from "@/lib/utils";
 import type { Subscription, Payment } from "@prisma/client";
@@ -34,6 +34,7 @@ interface Props {
 export function BillingPage({ subscription, payments }: Props) {
   const [portalLoading, setPortalLoading] = useState(false);
   const [upgradeLoading, setUpgradeLoading] = useState<string | null>(null);
+  const [cryptoLoading, setCryptoLoading] = useState<string | null>(null);
 
   const plan = subscription?.plan ?? "FREE";
   const status = subscription?.status ?? "INACTIVE";
@@ -51,6 +52,24 @@ export function BillingPage({ subscription, payments }: Props) {
       toast.error("Could not open billing portal");
     } finally {
       setPortalLoading(false);
+    }
+  }
+
+  async function payWithCrypto(targetPlan: "PRO" | "ELITE") {
+    setCryptoLoading(targetPlan);
+    try {
+      const res = await fetch("/api/crypto/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plan: targetPlan }),
+      });
+      const data = await res.json();
+      if (data.url) window.location.href = data.url;
+      else throw new Error(data.error);
+    } catch {
+      toast.error("Could not start crypto checkout");
+    } finally {
+      setCryptoLoading(null);
     }
   }
 
@@ -151,11 +170,21 @@ export function BillingPage({ subscription, payments }: Props) {
               <Button
                 size="sm"
                 variant={p === "ELITE" ? "elite" : "default"}
-                className="w-full font-orbitron tracking-wider text-xs"
+                className="w-full font-orbitron tracking-wider text-xs mb-2"
                 onClick={() => upgrade(p, "monthly")}
                 disabled={upgradeLoading === p}
               >
-                {upgradeLoading === p ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : "GET STARTED"}
+                {upgradeLoading === p ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : "PAY WITH CARD"}
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                className="w-full text-xs gap-1.5 border-orange-500/30 text-orange-400 hover:bg-orange-500/10 hover:text-orange-300"
+                onClick={() => payWithCrypto(p)}
+                disabled={cryptoLoading === p}
+              >
+                {cryptoLoading === p ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Bitcoin className="w-3.5 h-3.5" />}
+                PAY WITH CRYPTO
               </Button>
             </div>
           ))}
