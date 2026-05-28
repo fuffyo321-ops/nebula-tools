@@ -64,7 +64,7 @@ export function PhantomButton({ plan, className, size = "sm", variant = "outline
       const treasuryKey = new PublicKey(treasuryAddress);
       const usdcMint = new PublicKey(USDC_MINT);
 
-      const rawAmount = PLAN_USDC[plan] * 10 ** USDC_DECIMALS;
+      const rawAmount = BigInt(PLAN_USDC[plan] * 10 ** USDC_DECIMALS);
 
       const senderATA = await getAssociatedTokenAddress(usdcMint, senderKey);
       const receiverATA = await getAssociatedTokenAddress(usdcMint, treasuryKey);

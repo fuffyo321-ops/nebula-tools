@@ -57,8 +57,8 @@ export async function verifySolanaPayment({
     if (post.owner !== treasuryAddress) continue;
 
     const pre = preBalances.find((p: any) => p.accountIndex === post.accountIndex);
-    const postAmount = parseInt(post.uiTokenAmount.amount, 10);
-    const preAmount = pre ? parseInt(pre.uiTokenAmount.amount, 10) : 0;
+    const postAmount = Number(post.uiTokenAmount.amount);
+    const preAmount = pre ? Number(pre.uiTokenAmount.amount) : 0;
 
     if (postAmount - preAmount >= expectedRaw) return true;
   }

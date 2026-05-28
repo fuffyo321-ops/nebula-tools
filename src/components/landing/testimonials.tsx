@@ -2,7 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Star } from "lucide-react";
+import { Star, Quote } from "lucide-react";
 
 const testimonials = [
   {
@@ -55,9 +55,33 @@ const testimonials = [
   },
 ];
 
+function TestimonialCard({ t }: { t: typeof testimonials[0] }) {
+  return (
+    <div className="flex-shrink-0 w-[340px] p-6 rounded-2xl border border-border bg-[#0d0d1a] hover:border-violet-500/30 transition-colors duration-300 mx-2.5">
+      <Quote className="w-6 h-6 text-violet-500/40 mb-4" />
+      <div className="flex gap-0.5 mb-4">
+        {Array.from({ length: t.stars }).map((_, j) => (
+          <Star key={j} className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+        ))}
+      </div>
+      <p className="text-slate-300 text-sm leading-relaxed mb-5">&ldquo;{t.text}&rdquo;</p>
+      <div className="flex items-center gap-3">
+        <div className={`w-9 h-9 rounded-full bg-gradient-to-br ${t.color} flex items-center justify-center text-white text-xs font-bold flex-shrink-0`}>
+          {t.avatar}
+        </div>
+        <div>
+          <p className="text-sm font-semibold text-white">{t.name}</p>
+          <p className="text-xs text-slate-500">{t.role}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function Testimonials() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+  const row2 = [...testimonials].reverse();
 
   return (
     <section ref={ref} className="py-24 overflow-hidden">
@@ -66,7 +90,7 @@ export function Testimonials() {
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-14"
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-violet-500/20 bg-violet-500/5 text-sm text-violet-400 mb-6">
             <Star className="w-3.5 h-3.5 fill-violet-400" />
@@ -76,43 +100,28 @@ export function Testimonials() {
             What Our Users{" "}
             <span className="gradient-text">Are Saying</span>
           </h2>
+          <p className="text-slate-500 text-base max-w-xl mx-auto">Real results from real people using NebulaTools every day.</p>
         </motion.div>
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {testimonials.map((t, i) => (
-            <motion.div
-              key={t.name}
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: i * 0.08 }}
-              className="glass-card-hover p-6 rounded-2xl"
-            >
-              {/* Stars */}
-              <div className="flex gap-0.5 mb-4">
-                {Array.from({ length: t.stars }).map((_, j) => (
-                  <Star key={j} className="w-4 h-4 text-amber-400 fill-amber-400" />
-                ))}
-              </div>
+      {/* Marquee rows */}
+      <div className="space-y-4">
+        {/* Row 1 — scroll left */}
+        <div className="flex overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+          <div className="flex animate-marquee">
+            {[...testimonials, ...testimonials].map((t, i) => (
+              <TestimonialCard key={`r1-${i}`} t={t} />
+            ))}
+          </div>
+        </div>
 
-              {/* Quote */}
-              <p className="text-slate-300 text-sm leading-relaxed mb-6">
-                &ldquo;{t.text}&rdquo;
-              </p>
-
-              {/* Author */}
-              <div className="flex items-center gap-3">
-                <div
-                  className={`w-10 h-10 rounded-full bg-gradient-to-br ${t.color} flex items-center justify-center text-white text-sm font-bold flex-shrink-0`}
-                >
-                  {t.avatar}
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-white">{t.name}</p>
-                  <p className="text-xs text-slate-500">{t.role}</p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+        {/* Row 2 — scroll right */}
+        <div className="flex overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+          <div className="flex animate-marquee-reverse">
+            {[...row2, ...row2].map((t, i) => (
+              <TestimonialCard key={`r2-${i}`} t={t} />
+            ))}
+          </div>
         </div>
       </div>
     </section>
