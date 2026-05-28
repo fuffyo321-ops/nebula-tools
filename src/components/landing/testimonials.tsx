@@ -72,7 +72,7 @@ export function Testimonials() {
             <Star className="w-3.5 h-3.5 fill-violet-400" />
             Loved by 50,000+ creators
           </div>
-          <h2 className="font-orbitron text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
+          <h2 className="font-orbitron text-2xl sm:text-3xl lg:text-5xl font-bold text-white mb-4">
             What Our Users{" "}
             <span className="gradient-text">Are Saying</span>
           </h2>

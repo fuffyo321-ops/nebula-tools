@@ -105,11 +105,11 @@ export function PricingSection({ minimal = false }: { minimal?: boolean }) {
               Simple Pricing
             </div>
           )}
-          <h2 className="font-orbitron text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
+          <h2 className="font-orbitron text-2xl sm:text-3xl lg:text-5xl font-bold text-white mb-4">
             Choose Your{" "}
             <span className="gradient-text">Subscription</span>
           </h2>
-          <p className="text-slate-400 text-lg mb-8">
+          <p className="text-slate-400 text-base sm:text-lg mb-8">
             Start free. Scale when you&apos;re ready. Cancel anytime.
           </p>
 
@@ -136,7 +136,7 @@ export function PricingSection({ minimal = false }: { minimal?: boolean }) {
         </motion.div>
 
         {/* Plans grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {plans.map((plan, i) => (
             <motion.div
               key={plan.id}
@@ -164,7 +164,7 @@ export function PricingSection({ minimal = false }: { minimal?: boolean }) {
               )}
 
               <div
-                className={`h-full rounded-2xl p-6 flex flex-col ${
+                className={`h-full rounded-2xl p-4 sm:p-6 flex flex-col ${
                   plan.highlighted ? "bg-[#0d0a1f]" : "bg-[#0d0d1a]"
                 }`}
               >
@@ -184,7 +184,7 @@ export function PricingSection({ minimal = false }: { minimal?: boolean }) {
                 {/* Price */}
                 <div className="mb-6">
                   <div className="flex items-end gap-1">
-                    <span className="font-orbitron text-4xl font-black text-white">
+                    <span className="font-orbitron text-3xl sm:text-4xl font-black text-white">
                       ${yearly ? Math.round(plan.yearlyPrice / 12) : plan.price}
                     </span>
                     {plan.price > 0 && (

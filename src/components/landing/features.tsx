@@ -93,11 +93,11 @@ export function Features() {
           <Zap className="w-3.5 h-3.5" />
           Why Choose NebulaTools
         </div>
-        <h2 className="font-orbitron text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
+        <h2 className="font-orbitron text-2xl sm:text-3xl lg:text-5xl font-bold text-white mb-4">
           Everything You Need to{" "}
           <span className="gradient-text">Move Faster</span>
         </h2>
-        <p className="text-slate-400 text-lg leading-relaxed">
+        <p className="text-slate-400 text-base sm:text-lg leading-relaxed">
           One subscription unlocks an entire ecosystem of AI tools — no juggling multiple accounts or billing cycles.
         </p>
       </motion.div>

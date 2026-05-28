@@ -97,7 +97,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1 }}
-          className="font-orbitron text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tight leading-[0.9] mb-6"
+          className="font-orbitron text-4xl sm:text-5xl lg:text-7xl xl:text-8xl font-black tracking-tight leading-[0.95] mb-6"
         >
           <span className="text-white">AI-DRIVEN</span>
           <br />
@@ -124,15 +124,15 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
+          className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-16 w-full px-2"
         >
-          <Button size="xl" asChild className="group shadow-2xl shadow-violet-500/30 font-orbitron tracking-wider">
+          <Button size="xl" asChild className="group shadow-2xl shadow-violet-500/30 font-orbitron tracking-wider w-full sm:w-auto">
             <Link href="/register">
               GET STARTED
               <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
             </Link>
           </Button>
-          <Button size="xl" variant="outline" asChild className="font-orbitron tracking-wider">
+          <Button size="xl" variant="outline" asChild className="font-orbitron tracking-wider w-full sm:w-auto">
             <Link href="/tools">
               BROWSE TOOLS
             </Link>

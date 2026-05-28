@@ -22,7 +22,7 @@ export function CTA() {
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7 }}
-          className="glass-card p-12 rounded-3xl text-center border-violet-500/20"
+          className="glass-card p-6 sm:p-12 rounded-3xl text-center border-violet-500/20"
           style={{ boxShadow: "0 0 60px rgba(124,58,237,0.15), inset 0 1px 0 0 rgba(255,255,255,0.04)" }}
         >
           <motion.div
@@ -33,7 +33,7 @@ export function CTA() {
             <Sparkles className="w-8 h-8 text-white" />
           </motion.div>
 
-          <h2 className="font-orbitron text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
+          <h2 className="font-orbitron text-2xl sm:text-3xl lg:text-5xl font-bold text-white mb-4">
             Ready to Supercharge
             <br />
             <span className="gradient-text">Your Workflow?</span>
@@ -44,14 +44,14 @@ export function CTA() {
             Start free — no credit card required.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button size="xl" asChild className="group shadow-2xl shadow-violet-500/30 font-orbitron tracking-wider min-w-[200px]">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full">
+            <Button size="xl" asChild className="group shadow-2xl shadow-violet-500/30 font-orbitron tracking-wider w-full sm:w-auto">
               <Link href="/register">
                 GET STARTED FREE
                 <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
               </Link>
             </Button>
-            <Button size="xl" variant="outline" asChild className="font-orbitron tracking-wider min-w-[200px]">
+            <Button size="xl" variant="outline" asChild className="font-orbitron tracking-wider w-full sm:w-auto">
               <Link href="#" target="_blank">
                 <MessageSquare className="w-5 h-5" />
                 JOIN DISCORD

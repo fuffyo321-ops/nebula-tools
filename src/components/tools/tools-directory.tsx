@@ -85,11 +85,11 @@ export function ToolsDirectory({ tools, categories, userPlan }: ToolsDirectoryPr
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15 }}
-          className="flex flex-wrap gap-3 mb-8"
+          className="flex flex-col gap-3 mb-8"
         >
           {/* Quick filters */}
           <div className="flex items-center gap-2 flex-wrap">
-            <Filter className="w-3.5 h-3.5 text-slate-500" />
+            <Filter className="w-3.5 h-3.5 text-slate-500 flex-shrink-0" />
             {filters.map((f) => (
               <button
                 key={f.id}
@@ -107,7 +107,7 @@ export function ToolsDirectory({ tools, categories, userPlan }: ToolsDirectoryPr
           </div>
 
           {/* Plan filter */}
-          <div className="flex items-center gap-2 ml-auto">
+          <div className="flex items-center gap-2 flex-wrap">
             {["all", "FREE", "PRO", "ELITE"].map((plan) => (
               <button
                 key={plan}

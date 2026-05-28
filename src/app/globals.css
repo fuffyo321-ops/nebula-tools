@@ -145,7 +145,7 @@
 
   /* Dashboard layout */
   .dashboard-sidebar {
-    @apply fixed left-0 top-0 h-full w-64 z-30;
+    @apply w-64 h-full flex flex-col;
     background: linear-gradient(180deg, #0d0d1a 0%, #080810 100%);
     border-right: 1px solid rgba(124, 58, 237, 0.1);
   }

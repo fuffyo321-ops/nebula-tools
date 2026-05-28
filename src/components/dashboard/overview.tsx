@@ -65,7 +65,7 @@ export function DashboardOverview({ user, subscription, recentActivity, toolsUse
   ];
 
   return (
-    <div className="p-6 sm:p-8 max-w-6xl">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-6xl">
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">

@@ -17,7 +17,7 @@ const navItems = [
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
 ];
 
-export function DashboardSidebar() {
+export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
   const pathname = usePathname();
   const { data: session } = useSession();
 
@@ -29,7 +29,7 @@ export function DashboardSidebar() {
     exact ? pathname === href : pathname.startsWith(href);
 
   return (
-    <aside className="dashboard-sidebar flex flex-col">
+    <aside className="dashboard-sidebar">
       {/* Logo */}
       <div className="px-6 py-5 border-b border-violet-500/10">
         <Link href="/" className="flex items-center gap-2.5 group">
@@ -53,6 +53,7 @@ export function DashboardSidebar() {
             <Link
               key={item.href}
               href={item.href}
+              onClick={onClose}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group ${
                 active
                   ? "bg-violet-600/20 text-white border border-violet-500/20"
@@ -71,6 +72,7 @@ export function DashboardSidebar() {
             <div className="my-2 h-px bg-border" />
             <Link
               href="/admin"
+              onClick={onClose}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group ${
                 pathname.startsWith("/admin")
                   ? "bg-amber-500/20 text-amber-300 border border-amber-500/20"
