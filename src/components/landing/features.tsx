@@ -113,7 +113,7 @@ export function Features() {
       >
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-violet-500/20 bg-violet-500/5 text-sm text-violet-400 mb-6">
           <Zap className="w-3.5 h-3.5" />
-          Why Choose NebulaTools
+          Why Choose NebulaToolsnipes
         </div>
         <h2 className="font-orbitron text-2xl sm:text-3xl lg:text-5xl font-bold text-white mb-4">
           Built for{" "}

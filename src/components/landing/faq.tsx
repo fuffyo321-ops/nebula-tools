@@ -8,7 +8,7 @@ import { ChevronDown, HelpCircle } from "lucide-react";
 const faqs = [
   {
     question: "What AI tools are included?",
-    answer: "NebulaTools includes 100+ AI tools across writing, image generation, coding, video, audio, SEO, data analysis, chatbots, and productivity. We add new tools every month. Check our full directory for the complete list.",
+    answer: "NebulaToolsnipes includes 100+ AI tools across writing, image generation, coding, video, audio, SEO, data analysis, chatbots, and productivity. We add new tools every month. Check our full directory for the complete list.",
   },
   {
     question: "Can I cancel anytime?",
@@ -63,7 +63,7 @@ export function FAQ() {
             <span className="gradient-text">Questions</span>
           </h2>
           <p className="text-slate-400">
-            Everything you need to know about NebulaTools.
+            Everything you need to know about NebulaToolsnipes.
           </p>
         </motion.div>
 

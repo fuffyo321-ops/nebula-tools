@@ -55,7 +55,7 @@ export function Navbar() {
                 </div>
               </div>
               <span className="font-orbitron font-bold text-lg text-white tracking-wide">
-                NEBULA<span className="text-violet-400">TOOLS</span>
+                NEBULA<span className="text-violet-400">TOOLSNIPES</span>
               </span>
             </Link>
 

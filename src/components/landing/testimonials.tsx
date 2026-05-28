@@ -11,7 +11,7 @@ const testimonials = [
     avatar: "AR",
     color: "from-violet-500 to-indigo-600",
     stars: 5,
-    text: "NebulaTools replaced at least 6 separate subscriptions for me. The writing AI alone saves me 10+ hours a week. The image generation is absolutely insane.",
+    text: "NebulaToolsnipes replaced at least 6 separate subscriptions for me. The writing AI alone saves me 10+ hours a week. The image generation is absolutely insane.",
   },
   {
     name: "Sarah Chen",
@@ -19,7 +19,7 @@ const testimonials = [
     avatar: "SC",
     color: "from-cyan-500 to-blue-600",
     stars: 5,
-    text: "We use NebulaTools for everything from marketing copy to code review. The ROI is unreal. It paid for itself within the first day of the trial.",
+    text: "We use NebulaToolsnipes for everything from marketing copy to code review. The ROI is unreal. It paid for itself within the first day of the trial.",
   },
   {
     name: "Marcus Johnson",
@@ -100,7 +100,7 @@ export function Testimonials() {
             What Our Users{" "}
             <span className="gradient-text">Are Saying</span>
           </h2>
-          <p className="text-slate-500 text-base max-w-xl mx-auto">Real results from real people using NebulaTools every day.</p>
+          <p className="text-slate-500 text-base max-w-xl mx-auto">Real results from real people using NebulaToolsnipes every day.</p>
         </motion.div>
       </div>
 

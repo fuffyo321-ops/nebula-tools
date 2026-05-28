@@ -65,7 +65,7 @@ export function CTA() {
           </h2>
 
           <p className="text-lg text-slate-400 mb-10 max-w-xl mx-auto leading-relaxed">
-            Join 50,000+ creators and teams already using NebulaTools to work smarter, create faster, and grow bigger.
+            Join 50,000+ creators and teams already using NebulaToolsnipes to work smarter, create faster, and grow bigger.
           </p>
 
           {/* Perks */}

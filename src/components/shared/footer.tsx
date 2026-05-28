@@ -43,7 +43,7 @@ export function Footer() {
                 </div>
               </div>
               <span className="font-orbitron font-bold text-lg text-white tracking-wide">
-                NEBULA<span className="text-violet-400">TOOLS</span>
+                NEBULA<span className="text-violet-400">TOOLSNIPES</span>
               </span>
             </Link>
             <p className="text-sm text-slate-500 max-w-xs leading-relaxed">
@@ -85,7 +85,7 @@ export function Footer() {
 
         <div className="mt-12 pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-slate-600">
-            © {new Date().getFullYear()} NebulaTools. All rights reserved.
+            © {new Date().getFullYear()} NebulaToolsnipes. All rights reserved.
           </p>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
