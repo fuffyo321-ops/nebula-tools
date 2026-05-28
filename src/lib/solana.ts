@@ -44,9 +44,9 @@ export async function verifySolanaPayment({
 
   if (!tx || tx.meta?.err !== null) return false;
 
-  // Reject transactions older than 5 minutes (prevents replays of old txns)
+  // Reject transactions older than 15 minutes (prevents replays of old txns)
   const blockTime: number = tx.blockTime ?? 0;
-  if (Date.now() / 1000 - blockTime > 300) return false;
+  if (Date.now() / 1000 - blockTime > 900) return false;
 
   const expectedRaw = usdcToRaw(expectedAmountUsd);
   const preBalances: any[] = tx.meta?.preTokenBalances ?? [];
